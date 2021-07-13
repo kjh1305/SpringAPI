@@ -41,7 +41,7 @@ public class UserController implements ErrorController {
             return bindingResult.getAllErrors();
         }
 
-        log.info("성공 로직 실행");
+        log.info("성공 로직 실행!!");
         //        userService.save(user);
 
         return user;
