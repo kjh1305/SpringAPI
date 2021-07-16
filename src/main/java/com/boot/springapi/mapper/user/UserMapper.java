@@ -1,10 +1,7 @@
 package com.boot.springapi.mapper.user;
 
 import com.boot.springapi.domain.user.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -17,4 +14,12 @@ public interface UserMapper {
 
     @Select("SELECT * FROM user")
     List<User> select();
+
+    @Update("UPDATE user SET email=#{email}, password=#{password}, name={#name} WHERE id=#{id}")
+    @Options(keyProperty = "id")
+    User update(User user);
+
+    @Delete("DELETE FROM user WHERE id=#{id}")
+    @Options(keyProperty = "id")
+    void delete(User user);
 }
