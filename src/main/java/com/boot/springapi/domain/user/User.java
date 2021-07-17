@@ -1,32 +1,33 @@
 package com.boot.springapi.domain.user;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+
 @Getter
 @Setter
+@NoArgsConstructor
 @ToString
 public class User {
-    long id;
+    private long id;
 
     @NotNull
-    String email;
+    private String email;
 
     @NotNull
-    String password;
+    private String password;
 
     @NotNull
-    String name;
+    private String name;
 
-    LocalDateTime det;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime det;
 
-    public User(){
-
-    }
     public User(String email, String password, String name) {
         this.email = email;
         this.password = password;

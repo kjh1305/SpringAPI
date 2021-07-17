@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -42,7 +44,8 @@ public class UserController implements ErrorController {
         }
 
         log.info("성공 로직 실행!!");
-        //        userService.save(user);
+        user.setDet(LocalDateTime.now());
+        userService.save(user);
 
         return user;
     }

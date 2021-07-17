@@ -16,10 +16,8 @@ public interface UserMapper {
     List<User> select();
 
     @Update("UPDATE user SET email=#{email}, password=#{password}, name={#name} WHERE id=#{id}")
-    @Options(keyProperty = "id")
     User update(User user);
 
     @Delete("DELETE FROM user WHERE id=#{id}")
-    @Options(keyProperty = "id")
-    void delete(User user);
+    void delete(@Param("id") long id);
 }
