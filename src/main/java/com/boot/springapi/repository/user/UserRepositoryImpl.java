@@ -3,6 +3,7 @@ package com.boot.springapi.repository.user;
 
 import com.boot.springapi.domain.user.User;
 import com.boot.springapi.mapper.user.UserMapper;
+import com.boot.springapi.pagination.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,7 +26,6 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public void insert(User user) {
-        log.info("user: {}", user);
         userMapper.insert(user);
     }
 
@@ -33,5 +33,35 @@ public class UserRepositoryImpl implements UserRepository{
     public List<User> userList() {
         List<User> list = userMapper.select();
         return list;
+    }
+
+    @Override
+    public List<User> userListPaging(Pagination pagination) {
+        return userMapper.selectPaging(pagination);
+    }
+
+    @Override
+    public User findUserId(long id) {
+        return userMapper.selectUserId(id);
+    }
+
+    @Override
+    public User findUserName(String name) {
+        return userMapper.selectUserName(name);
+    }
+
+    @Override
+    public void update(User user) {
+        userMapper.update(user);
+    }
+
+    @Override
+    public void delete(long id) {
+        userMapper.delete(id);
+    }
+
+    @Override
+    public int userCnt() {
+        return userMapper.userCnt();
     }
 }

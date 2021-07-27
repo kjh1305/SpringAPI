@@ -1,6 +1,7 @@
 package com.boot.springapi.mapper.user;
 
 import com.boot.springapi.domain.user.User;
+import com.boot.springapi.pagination.Pagination;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -15,9 +16,21 @@ public interface UserMapper {
     @Select("SELECT * FROM user")
     List<User> select();
 
-    @Update("UPDATE user SET email=#{email}, password=#{password}, name={#name} WHERE id=#{id}")
-    User update(User user);
+    @Select("SELECT * FROM user limit #{startIndex}, #{pageSize}")
+    List<User> selectPaging(Pagination pagination);
+
+    @Select("SELECT * FROM user WHERE id=#{id}")
+    User selectUserId(long id);
+
+    @Select("SELECT * FROM user WHERE name=#{name}")
+    User selectUserName(String name);
+
+    @Update("UPDATE user SET email=#{email}, password=#{password}, name=#{name}, det=#{det} WHERE id=#{id}")
+    void update(User user);
 
     @Delete("DELETE FROM user WHERE id=#{id}")
     void delete(@Param("id") long id);
+
+    @Select("SELECT COUNT(*) FROM user")
+    int userCnt();
 }

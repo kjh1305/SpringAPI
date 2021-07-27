@@ -2,10 +2,10 @@ package com.boot.springapi.service.user;
 
 
 import com.boot.springapi.domain.user.User;
+import com.boot.springapi.pagination.Pagination;
 import com.boot.springapi.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,23 +32,34 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findById(User id) {
-        return null;
+    public List<User> findAllPaging(Pagination pagination) {
+        return userRepository.userListPaging(pagination);
     }
 
     @Override
-    public User findByName(User name) {
-        return null;
+    public User findById(long id) {
+        return userRepository.findUserId(id);
+    }
+
+    @Override
+    public User findByName(String name) {
+        return userRepository.findUserName(name);
     }
 
     @Override
     public void update(User user) {
+        userRepository.update(user);
+    }
 
+
+    @Override
+    public void delete(long id) {
+        userRepository.delete(id);
     }
 
     @Override
-    public void delete(User id) {
-
+    public int pageCnt() {
+        return userRepository.userCnt();
     }
 
 
