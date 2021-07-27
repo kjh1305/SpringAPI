@@ -4,16 +4,19 @@ import com.boot.springapi.domain.user.DeleteUser;
 import com.boot.springapi.domain.user.InsertUser;
 import com.boot.springapi.domain.user.User;
 import com.boot.springapi.pagination.Pagination;
+import com.boot.springapi.security.JwtTokenProvider;
 import com.boot.springapi.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -21,10 +24,34 @@ import java.util.List;
 public class UserController implements ErrorController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    //회원가입
+//    @PostMapping("/join")
+//    public Long join(@RequestBody Map<String, String> user) {
+//        return userRepository.save(User.builder()
+//                .email(user.get("email"))
+//                .password(passwordEncoder.encode(user.get("password")))
+//                .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
+//                .build()).getId();
+//    }
+    //로그인
+    @PostMapping("/login")
+    public String login(@RequestBody Map<String, String> user){
+        User member = userService.findByEmail(user.get("email"))
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+        if(!passwordEncoder.matches(user.get("password"), member.getPassword())){
+            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+        }
+        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
     //목록 조회
@@ -56,7 +83,7 @@ public class UserController implements ErrorController {
         user.setEmail(insertUser.getEmail());
         user.setPassword(insertUser.getPassword());
         user.setName(insertUser.getName());
-        user.setDet(LocalDateTime.now());
+//        user.setDet(LocalDateTime.now());
         userService.save(user);
 
         return user;
@@ -85,7 +112,7 @@ public class UserController implements ErrorController {
 
         log.info("수정 로직 실행!!");
         user.setId(userId);
-        user.setDet(LocalDateTime.now());
+//        user.setDet(LocalDateTime.now());
         log.info("user : {} ", user);
         userService.update(user);
 

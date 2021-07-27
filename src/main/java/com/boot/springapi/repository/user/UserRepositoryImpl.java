@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -48,6 +49,11 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public User findUserName(String name) {
         return userMapper.selectUserName(name);
+    }
+
+    @Override
+    public Optional<User> findUserEmail(String email) {
+        return userMapper.selectUserEmail(email);
     }
 
     @Override
