@@ -1,6 +1,7 @@
 package com.boot.springapi.controller.user;
 
 import com.boot.springapi.domain.user.DeleteUser;
+import com.boot.springapi.domain.user.InsertUser;
 import com.boot.springapi.domain.user.User;
 import com.boot.springapi.pagination.Pagination;
 import com.boot.springapi.service.user.UserService;
@@ -41,9 +42,9 @@ public class UserController implements ErrorController {
 
     //등록
     @PostMapping
-    public Object postUser(@RequestBody @Validated User user, BindingResult bindingResult){
+    public Object postUser(@RequestBody @Validated InsertUser insertUser, BindingResult bindingResult){
 
-        log.info("user : {} ", user);
+        log.info("user : {} ", insertUser);
 
         if(bindingResult.hasErrors()){
             log.info("오류 발생 errors={}", bindingResult);
@@ -51,6 +52,10 @@ public class UserController implements ErrorController {
         }
 
         log.info("등록 로직 실행!!");
+        User user = new User();
+        user.setEmail(insertUser.getEmail());
+        user.setPassword(insertUser.getPassword());
+        user.setName(insertUser.getName());
         user.setDet(LocalDateTime.now());
         userService.save(user);
 
