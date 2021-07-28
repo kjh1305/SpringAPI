@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,9 +34,9 @@ public class User implements UserDetails {
     @NotNull
     private String name;
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//    private LocalDateTime det;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime det;
 
     public User(String email, String password, String name) {
         this.email = email;
@@ -43,7 +44,7 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    private List<String> roles = new ArrayList<>(); //enum으로 바꾸기
+    private List<String> roles = new ArrayList<>(Arrays.asList("ROLE_USER")); //enum으로 바꾸기
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -75,5 +76,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getPassword() {
+        return ("{noop}" + password);
     }
 }

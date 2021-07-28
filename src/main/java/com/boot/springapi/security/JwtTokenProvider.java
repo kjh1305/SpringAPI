@@ -23,7 +23,7 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    private String secretKey = "webfirewood";
+    private String secretKey = "secretKey-test-jwt-spring-boot-create-token";
 
     // 토큰 유효시간 30분
     private long tokenValidTime = 30 * 60 * 1000L;
