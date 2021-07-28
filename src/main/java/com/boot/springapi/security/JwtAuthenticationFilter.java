@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             //토큰이 유효하면 토큰으로부터 유저 정보를 받아옴
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             log.info("토큰 -> 유저 정보 : {}", authentication);
-            //SecurityContext 에 Authentication 객체를 저장
+            //SecurityContext 에 Authentication 객체를 저장, 현재 로그인한 정보
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         chain.doFilter(request, response);

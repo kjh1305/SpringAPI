@@ -22,7 +22,12 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @ToString
+/**
+ * Spring Security 에서 사용자의 정보를 담는 인터페이스, 사용자의 정보를 불러오기 위해서 구현해야한다.
+ */
 public class User implements UserDetails {
+
+
     private long id;
 
     @NotNull
@@ -46,6 +51,10 @@ public class User implements UserDetails {
 
     private List<String> roles = new ArrayList<>(Arrays.asList("ROLE_USER")); //enum으로 바꾸기
 
+    /**
+     *
+     * @return 계정의 권한을 리턴
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
@@ -53,31 +62,55 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @return 계정의 고유한 값을 리턴 (DB PK값, 중복 없는 이메일 등)
+     */
     @Override
     public String getUsername() {
         return email;
     }
 
+    /**
+     * true = 만료 안됨
+     * @return  계정의 만료 여부 리턴
+     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * true = 잠기지 않음
+     * @return  계정의 잠김 여부 리턴
+     */
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    /**
+     * true = 만료 안됨
+     * @return  비밀번호 만료 여부 리턴
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @Override
+    /**
+     * true = 활성화 됨
+     * @return  계정의 활성화 여부 리턴턴
+     */
+   @Override
     public boolean isEnabled() {
         return true;
     }
 
+    /**
+     *
+     * @return 계정의 비밀번호를 리턴
+     */
     public String getPassword() {
         return ("{noop}" + password);
     }
