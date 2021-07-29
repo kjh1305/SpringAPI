@@ -51,7 +51,6 @@ public class UserController implements ErrorController {
         int userListCnt = userService.pageCnt();
         Pagination pagination = new Pagination(userListCnt, page);
         log.info("pagination = {}", pagination);
-//        List<User> userList = userService.findAll();
         List<User> userList = userService.findAllPaging(pagination);
         Object object = new Object[]{userList, pagination};
 

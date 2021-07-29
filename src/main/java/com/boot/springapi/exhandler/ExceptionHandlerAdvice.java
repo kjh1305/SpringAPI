@@ -3,6 +3,7 @@ package com.boot.springapi.exhandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,21 +27,27 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ErrorResult notReadExHandler(Exception e){
-        log.error("ex", e);
+        log.error("BAD_REQUEST", e);
         return new ErrorResult("유효하지 않은 요청", e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ErrorResult notMediaTypeNotSupport(Exception e){
-        log.error("ex", e);
+        log.error("PRECONDITION_FAILED", e);
         return new ErrorResult("JSON 타입만 지원합니다.", e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler
     public ErrorResult exHandler(Exception e){
-        log.error("ex", e);
+        log.error("NOT_FOUND: ", e);
         return new ErrorResult("EX", e.getMessage());
+    }
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ErrorResult accessDenied(Exception e){
+        log.error("UNAUTHORIZED: ", e);
+        return new ErrorResult("권한이 없습니다.", e.getMessage());
     }
 }

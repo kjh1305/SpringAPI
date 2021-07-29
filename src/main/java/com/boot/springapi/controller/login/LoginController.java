@@ -33,6 +33,5 @@ public class LoginController {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
-        //쿠키로, 유저 정보 함께 보내야함.
     }
 }

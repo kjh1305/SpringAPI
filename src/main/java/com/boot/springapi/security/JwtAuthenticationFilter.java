@@ -2,6 +2,7 @@ package com.boot.springapi.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -32,6 +33,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             log.info("토큰 -> 유저 정보 : {}", authentication);
             //SecurityContext 에 Authentication 객체를 저장, 현재 로그인한 정보
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        }else if(token != null & jwtTokenProvider.validateToken(token)==false){
+            throw new AccessDeniedException("권한 없음");
         }
         chain.doFilter(request, response);
     }
