@@ -43,17 +43,7 @@ public class UserController implements ErrorController {
 //                .roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 USER 로 설정
 //                .build()).getId();
 //    }
-    //로그인
-    @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> user){
-        User member = userService.findByEmail(user.get("email"))
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
-        if(!passwordEncoder.matches(user.get("password"), member.getPassword())){
-            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
-        }
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
-        //쿠키로, 유저 정보 함께 보내야함.
-    }
+
 
     //목록 조회
     @GetMapping
