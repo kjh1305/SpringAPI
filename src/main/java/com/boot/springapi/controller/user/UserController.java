@@ -3,6 +3,7 @@ package com.boot.springapi.controller.user;
 import com.boot.springapi.domain.user.DeleteUser;
 import com.boot.springapi.domain.user.InsertUser;
 import com.boot.springapi.domain.user.User;
+import com.boot.springapi.domain.user.UserList;
 import com.boot.springapi.pagination.Pagination;
 import com.boot.springapi.security.JwtTokenProvider;
 import com.boot.springapi.service.user.UserService;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -51,10 +51,18 @@ public class UserController implements ErrorController {
         int userListCnt = userService.pageCnt();
         Pagination pagination = new Pagination(userListCnt, page);
         log.info("pagination = {}", pagination);
-        List<User> userList = userService.findAllPaging(pagination);
-        Object object = new Object[]{userList, pagination};
+        List<UserList> userList = userService.findAllPaging(pagination);
+//        Object object = new Object[]{userList, pagination};
 
-        return object;
+        return userList;
+    }
+
+    @GetMapping("/page")
+    public Object usersPage(@RequestParam(defaultValue = "1") int page){
+        int userListCnt = userService.pageCnt();
+        Pagination pagination = new Pagination(userListCnt, page);
+        log.info("pagination = {}", pagination);
+        return pagination;
     }
 
     //등록

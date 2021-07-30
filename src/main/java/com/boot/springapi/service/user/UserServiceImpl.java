@@ -2,6 +2,7 @@ package com.boot.springapi.service.user;
 
 
 import com.boot.springapi.domain.user.User;
+import com.boot.springapi.domain.user.UserList;
 import com.boot.springapi.pagination.Pagination;
 import com.boot.springapi.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> findAllPaging(Pagination pagination) {
+    public List<UserList> findAllPaging(Pagination pagination) {
         return userRepository.userListPaging(pagination);
     }
 

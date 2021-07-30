@@ -25,7 +25,7 @@ public class LoginController {
     private final JwtTokenProvider jwtTokenProvider;
 
     //로그인
-    @PostMapping("/login")
+    @PostMapping
     public String login(@RequestBody Map<String, String> user) {
         User member = userService.findByEmail(user.get("email"))
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));

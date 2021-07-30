@@ -2,6 +2,7 @@ package com.boot.springapi.repository.user;
 
 
 import com.boot.springapi.domain.user.User;
+import com.boot.springapi.domain.user.UserList;
 import com.boot.springapi.mapper.user.UserMapper;
 import com.boot.springapi.pagination.Pagination;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public List<User> userListPaging(Pagination pagination) {
+    public List<UserList> userListPaging(Pagination pagination) {
         return userMapper.selectPaging(pagination);
     }
 

@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  * 전역 ExceptionHandler
@@ -44,6 +44,7 @@ public class ExceptionHandlerAdvice {
         log.error("NOT_FOUND: ", e);
         return new ErrorResult("EX", e.getMessage());
     }
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(AccessDeniedException.class)
     public ErrorResult accessDenied(Exception e){
