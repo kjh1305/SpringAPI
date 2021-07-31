@@ -10,7 +10,7 @@ public class Pagination {
     private int pageSize = 5;
 
     /** 2. 페이징된 버튼의 블럭당 최대 개수 **/
-    private int blockSize = 10;
+    private int blockSize = 5;
 
     /** 3. 현재 페이지 **/
     private int page = 1;
