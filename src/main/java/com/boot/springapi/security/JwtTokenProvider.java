@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -28,11 +32,18 @@ public class JwtTokenProvider {
 
     private final CustomUserDetailService userDetailService;
 
+    private SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+    private Key key;
+
     // 객체 초기화, secretKey 를 Base64로 인코딩 한다.
     @PostConstruct
     protected void init(){
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
+
 
     //JWT 토큰 생성
     public String createToken(String userPk, List<String> roles){
@@ -40,10 +51,11 @@ public class JwtTokenProvider {
         claims.put("roles", roles); //정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
         return Jwts.builder()
+                .setIssuer("/cokes-public-api")
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) //토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + tokenValidTime)) //set Expire Time
-                .signWith(SignatureAlgorithm.HS256, secretKey) //사용할 암호화 알고리즘과 signature 에 들어갈 secret 값 세팅
+                .signWith(key, signatureAlgorithm) //사용할 암호화 알고리즘과 signature 에 들어갈 secret 값 세팅
                 .compact();
     }
 
@@ -55,7 +67,8 @@ public class JwtTokenProvider {
 
     //토큰에서 회원 정보 추출
     public String getUserPk(String token){
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+//        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     //Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN 값"
@@ -66,7 +79,8 @@ public class JwtTokenProvider {
     //토큰의 유효성 + 만료일자 조회
     public boolean validateToken(String jwtToken){
         try{
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+//            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         }catch (Exception e){
             return false;
