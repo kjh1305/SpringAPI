@@ -1,3 +1,4 @@
+/*
 package com.boot.springapi.controller.login;
 
 
@@ -22,10 +23,11 @@ public class LoginController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+//    private final JwtTokenProvider jwtTokenProvider;
 
     //로그인
-    @PostMapping
+    */
+/*@PostMapping
     public String login(@RequestBody Map<String, String> user) {
         User member = userService.findByEmail(user.get("email"))
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
@@ -34,5 +36,7 @@ public class LoginController {
         }
 
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
-    }
+    }*//*
+
 }
+*/

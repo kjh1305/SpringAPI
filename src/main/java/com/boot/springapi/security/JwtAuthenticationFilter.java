@@ -1,3 +1,4 @@
+/*
 package com.boot.springapi.security;
 
 import com.boot.springapi.exhandler.ErrorResult;
@@ -44,3 +45,4 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         chain.doFilter(req, res);
     }
 }
+*/

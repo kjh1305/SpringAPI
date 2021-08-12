@@ -1,3 +1,4 @@
+/*
 package com.boot.springapi.security;
 
 import lombok.RequiredArgsConstructor;
@@ -54,3 +55,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 }
+*/
