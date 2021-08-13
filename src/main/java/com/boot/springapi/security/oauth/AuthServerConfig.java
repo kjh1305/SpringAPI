@@ -28,6 +28,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     private UserDetailsService userDetailsService;
     private DataSource dataSource;
 
+    //클라이언트에 대한 설정 DB, InMemory
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 //        clients.jdbc(dataSource)
@@ -41,6 +42,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .autoApprove(true);
     }
 
+    //'/oauth/token', '/oauth/authorize' 등 엔드포인트의 대한 보안관련 설정
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore)

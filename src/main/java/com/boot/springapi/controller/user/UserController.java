@@ -5,10 +5,9 @@ import com.boot.springapi.domain.user.InsertUser;
 import com.boot.springapi.domain.user.User;
 import com.boot.springapi.domain.user.UserList;
 import com.boot.springapi.pagination.Pagination;
-import com.boot.springapi.security.JwtTokenProvider;
 import com.boot.springapi.service.user.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
@@ -20,19 +19,20 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController implements ErrorController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+//    private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    public UserController(UserService userService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+//    @Autowired
+//    public UserController(UserService userService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+//        this.userService = userService;
+//        this.passwordEncoder = passwordEncoder;
+//        this.jwtTokenProvider = jwtTokenProvider;
+//    }
 
     //회원가입
 //    @PostMapping("/join")
